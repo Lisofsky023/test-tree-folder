@@ -4,23 +4,15 @@ import PropTypes from 'prop-types';
 
 const ApartmentList = ({ houseId, onApartmentSelect }) => {
   const [apartments, setApartments] = useState([]);
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-  
     fetchApartments(houseId)
       .then(apartmentData => {
         setApartments(apartmentData);
       })
       .catch(err => {
-        setError(err.message);
-        console.error('Ошибка при загрузке данных:', err);
-      })
-      .finally(() => setLoading(false));
+        console.error('Ошибка при загрузке данных:', err.message);
+      });
   }, [houseId]);
 
   return (
