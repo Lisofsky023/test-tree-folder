@@ -9,7 +9,7 @@ const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
       refreshClients();
     });
   };
-  console.log('apartmenttttttt',apartment)
+
   return (
     <div>
       <h3>Apartment Details</h3>
@@ -21,9 +21,9 @@ const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
         <div>
           <h3>Clients:</h3>
           {clients.map(client => (
-            <div key={client.Id}>
-              <p>Name: {client.Name}, Phone: {client.Phone}, Email: {client.Email}</p>
-              <button onClick={() => handleDeleteClient(client.BindId)}>Delete Client</button>
+            <div key={client.id}>
+              <p>Name: {client.name}, Phone: {client.phone}, Email: {client.email}</p>
+              <button onClick={() => handleDeleteClient(client.bindId)}>Delete Client</button>
             </div>
           ))}
         </div>

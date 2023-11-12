@@ -4,14 +4,15 @@ import { API_BASE_URL } from './index';
 export const fetchApartments = async houseId => {
   try {
     const response = await axios.get(`${API_BASE_URL}HousingStock?houseId=${houseId}`);
+    console.log('response.data', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching apartments:', error);
   }
 };
 
-export const fetchClients = () => {
-  return axios.get(`${API_BASE_URL}HousingStock/clients`, {
+export const fetchClients = (addressId) => {
+  return axios.get(`${API_BASE_URL}HousingStock/clients?addressId=${addressId}`, {
     headers: {
       'Accept': 'text/plain'
     }

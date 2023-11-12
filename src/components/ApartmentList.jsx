@@ -10,20 +10,20 @@ const ApartmentList = ({ houseId, onApartmentSelect }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchApartments(houseId)
-      .then(data => {
-        setApartments(data);
-        return fetchClients();
-      })
-      .then(allClients => {
+    setError(null);
+  
+    Promise.all([fetchApartments(houseId), fetchClients()])
+      .then(([apartmentData, allClients]) => {
+        console.log('Apartments data:', apartmentData);
+        console.log('Clients data:', allClients);
+        setApartments(apartmentData);
         const filteredClients = allClients.filter(client => {
-          return apartments.some(apartment => {
-            return apartment.AddressId === client.BindId;
+          return apartmentData.some(apartment => {
+            return apartment.addressId === client.bindId;
           });
         });
         setClients(filteredClients);
       })
-
       .catch(err => {
         setError(err);
         console.error('Ошибка при загрузке данных:', err);
@@ -31,12 +31,10 @@ const ApartmentList = ({ houseId, onApartmentSelect }) => {
       .finally(() => setLoading(false));
   }, [houseId]);
 
+
   const handleApartmentClick = (apartment) => {
     onApartmentSelect(apartment);
   };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>

@@ -10,33 +10,29 @@ const App = () => {
   const [selectedHouseId, setSelectedHouseId] = useState(null);
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [selectedClients, setSelectedClients] = useState([]);
-
+  
   const handleApartmentSelect = async (apartment) => {
     setSelectedApartment(apartment);
     try {
-      const updatedClients = await fetchClients();
-      const filteredClients = updatedClients.filter(client => client.BindId === apartment.AddressId);
+      const filteredClients = await fetchClients(apartment.addressId);
       setSelectedClients(filteredClients);
     } catch (error) {
       console.error("Ошибка при обновлении списка клиентов:", error);
     }
   };
-
+  
   const refreshClients = async () => {
-    try {
-      const updatedClients = await fetchClients();
-      if (selectedApartment) {
-        const updatedSelectedClients = updatedClients.filter(client => client.BindId === selectedApartment.AddressId);
-        setSelectedClients(updatedSelectedClients);
+    if (selectedApartment) {
+      try {
+        const filteredClients = await fetchClients(selectedApartment.addressId);
+        setSelectedClients(filteredClients);
+      } catch (error) {
+        console.error("Ошибка при обновлении списка клиентов:", error);
       }
-    } catch (error) {
-      console.error("Ошибка при обновлении списка клиентов:", error);
     }
   };
   
   
-
-
   const handleStreetSelect = (id) => {
     setSelectedStreetId(id);
     setSelectedHouseId(null);
