@@ -13,22 +13,17 @@ const ClientForm = ({ onClientAdded, apartmentId }) => {
     setClientData({ ...clientData, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  console.log('Apartment ID in ClientForm:', apartmentId);
-  addClient(clientData, apartmentId)
-    .then(response => {
-      if (response && response.id) {
-        onClientAdded();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const clientId = await addClient(clientData, apartmentId);
+      if (clientId) {
+        onClientAdded(); // Обновляем список клиентов
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error("Ошибка при добавлении клиента:", error);
-    });
-};
-
-  
-  
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>

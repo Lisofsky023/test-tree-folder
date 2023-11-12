@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import StreetList from './components/StreetList';
 import HouseList from './components/HouseList';
 import ApartmentList from './components/ApartmentList';
@@ -9,28 +9,32 @@ const App = () => {
   const [selectedStreetId, setSelectedStreetId] = useState(null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
   const [selectedApartment, setSelectedApartment] = useState(null);
-  const [allClients, setAllClients] = useState([]);
   const [selectedClients, setSelectedClients] = useState([]);
 
-  useEffect(() => {
-    fetchClients().then(data => setAllClients(data));
-  }, []);
-
-  const handleApartmentSelect = (apartment) => {
+  const handleApartmentSelect = async (apartment) => {
     setSelectedApartment(apartment);
-    const filteredClients = allClients.filter(client => client.BindId === apartment.AddressId);
-    setSelectedClients(filteredClients);
+    try {
+      const updatedClients = await fetchClients();
+      const filteredClients = updatedClients.filter(client => client.BindId === apartment.AddressId);
+      setSelectedClients(filteredClients);
+    } catch (error) {
+      console.error("Ошибка при обновлении списка клиентов:", error);
+    }
   };
 
-  const refreshClients = () => {
-    fetchClients().then(data => {
-      setAllClients(data);
+  const refreshClients = async () => {
+    try {
+      const updatedClients = await fetchClients();
       if (selectedApartment) {
-        const updatedSelectedClients = data.filter(client => client.BindId === selectedApartment.AddressId);
+        const updatedSelectedClients = updatedClients.filter(client => client.BindId === selectedApartment.AddressId);
         setSelectedClients(updatedSelectedClients);
       }
-    });
+    } catch (error) {
+      console.error("Ошибка при обновлении списка клиентов:", error);
+    }
   };
+  
+  
 
 
   const handleStreetSelect = (id) => {
@@ -53,7 +57,6 @@ const App = () => {
       {selectedStreetId && <HouseList streetId={selectedStreetId} onHouseSelect={handleHouseSelect} />}
       {selectedHouseId && <ApartmentList houseId={selectedHouseId} onApartmentSelect={handleApartmentSelect} />}
       {selectedApartment && <ApartmentDetail apartment={selectedApartment} clients={selectedClients} refreshClients={refreshClients} />}
-
     </div>
   );
 };

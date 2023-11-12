@@ -1,28 +1,15 @@
 import PropTypes from 'prop-types';
 import ClientForm from './ClientForm';
 import { deleteClient } from '../api/clientApi';
-import { useState, useEffect } from 'react';
 
-const getTenantsForApartment = (apartmentId) => {
-  const allTenants = JSON.parse(localStorage.getItem('tenants') || '[]');
-  return allTenants.filter(tenant => tenant.BindId === apartmentId);
-};
-
-
-const ApartmentDetail = ({ apartment, refreshClients }) => {
-  const [tenants, setTenants] = useState([]);
-
-  useEffect(() => {
-    setTenants(getTenantsForApartment(apartment.addressId));
-  }, [apartment.addressId]);
+const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
 
   const handleDeleteClient = (bindId) => {
     deleteClient(bindId).then(() => {
       refreshClients();
     });
   };
-  console.log("Apartment data:", apartment);
-
+  console.log('apartmenttttttt',apartment)
   return (
     <div>
       <h3>Apartment Details</h3>
@@ -30,18 +17,18 @@ const ApartmentDetail = ({ apartment, refreshClients }) => {
         <p>Flat: {apartment.flat}</p>
         <p>Building: {apartment.building}</p>
       </div>
-      {tenants.length > 0 ? (
+      {clients.length > 0 ? (
         <div>
-          <h3>Tenants:</h3>
-          {tenants.map(tenant => (
-            <div key={tenant.id}>
-              <p>Name: {tenant.Name}, Phone: {tenant.Phone}, Email: {tenant.Email}</p>
-              <button onClick={() => handleDeleteClient(tenant.id)}>Delete Tenant</button>
+          <h3>Clients:</h3>
+          {clients.map(client => (
+            <div key={client.Id}>
+              <p>Name: {client.Name}, Phone: {client.Phone}, Email: {client.Email}</p>
+              <button onClick={() => handleDeleteClient(client.BindId)}>Delete Client</button>
             </div>
           ))}
         </div>
       ) : (
-        <p>No tenants in this apartment.</p>
+        <p>No clients in this apartment.</p>
       )}
       <ClientForm onClientAdded={refreshClients} apartmentId={apartment.addressId} />
     </div>
