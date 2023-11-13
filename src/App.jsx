@@ -3,7 +3,7 @@ import StreetList from './components/StreetList';
 import HouseList from './components/HouseList';
 import ApartmentList from './components/ApartmentList';
 import ApartmentDetail from './components/ApartmentDetail';
-import { fetchClients } from './api/clientApi';
+import apiService from './api/apiService';
 
 const App = () => {
   const [selectedStreetId, setSelectedStreetId] = useState(null);
@@ -14,17 +14,23 @@ const App = () => {
   const handleApartmentSelect = async (apartment) => {
     setSelectedApartment(apartment);
     try {
-      const filteredClients = await fetchClients(apartment.addressId);
-      setSelectedClients(filteredClients);
+      const filteredClients = await apiService.fetchClients(apartment.addressId);
+      if (Array.isArray(filteredClients)) {
+        setSelectedClients(filteredClients);
+      } else {
+        console.error("API returned an unexpected type for clients:", typeof filteredClients);
+        setSelectedClients([]);
+      }
     } catch (error) {
       console.error("Ошибка при обновлении списка клиентов:", error);
     }
   };
   
+  
   const refreshClients = async () => {
     if (selectedApartment) {
       try {
-        const filteredClients = await fetchClients(selectedApartment.addressId);
+        const filteredClients = await apiService.fetchClients(selectedApartment.addressId);
         setSelectedClients(filteredClients);
       } catch (error) {
         console.error("Ошибка при обновлении списка клиентов:", error);

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { fetchApartments } from '../api/clientApi';
+import apiService from '../api/apiService';
 import PropTypes from 'prop-types';
 
 const ApartmentList = ({ houseId, onApartmentSelect }) => {
   const [apartments, setApartments] = useState([]);
 
   useEffect(() => {
-    fetchApartments(houseId)
+    apiService.fetchApartments(houseId)
       .then(apartmentData => {
         setApartments(apartmentData);
       })

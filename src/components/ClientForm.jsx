@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addClient } from '../api/clientApi';
+import apiService from '../api/apiService';
 import PropTypes from 'prop-types';
 
 const ClientForm = ({ onClientAdded, apartmentId }) => {
@@ -16,14 +16,14 @@ const ClientForm = ({ onClientAdded, apartmentId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const clientId = await addClient(clientData, apartmentId);
-      if (clientId) {
-        onClientAdded(); // Обновляем список клиентов
-      }
+      await apiService.addClient(clientData, apartmentId);
+      // Вызываем onClientAdded для обновления списка клиентов
+      onClientAdded(clientData);
     } catch (error) {
       console.error("Ошибка при добавлении клиента:", error);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

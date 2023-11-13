@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import ClientForm from './ClientForm';
-import { deleteClient } from '../api/clientApi';
+import apiService from '../api/apiService';
 
 const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
-
+  if (!Array.isArray(clients)) {
+    console.error("Invalid prop 'clients'. Expected an array, received:", typeof clients);
+    clients = [];
+  }
+  
   const handleDeleteClient = (bindId) => {
-    deleteClient(bindId).then(() => {
+    apiService.deleteClient(bindId).then(() => {
       refreshClients();
     });
   };

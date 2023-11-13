@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchStreets } from '../api/streetsApi';
+import apiService from '../api/apiService';
 import PropTypes from 'prop-types';
 
 const StreetList = ({ onStreetSelect }) => {
@@ -9,7 +9,7 @@ const StreetList = ({ onStreetSelect }) => {
   useEffect(() => {
     const getStreets = async () => {
       try {
-        const data = await fetchStreets();
+        const data = await apiService.fetchStreets();
         setStreets(data);
       } catch (error) {
         setError(error.message);

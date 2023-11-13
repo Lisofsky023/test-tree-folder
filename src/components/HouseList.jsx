@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchHouses } from "../api/housesApi";
+import apiService from "../api/apiService";
 import PropTypes from 'prop-types';
 
 const HouseList = ({ streetId, onHouseSelect }) => {
@@ -10,7 +10,7 @@ const HouseList = ({ streetId, onHouseSelect }) => {
     setHouses([]);
     setError(null);
     if (streetId) {
-      fetchHouses(streetId)
+      apiService.fetchHouses(streetId)
         .then(setHouses)
         .catch(e => setError(e.message));
     }
