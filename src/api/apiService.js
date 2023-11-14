@@ -1,4 +1,3 @@
-// apiService.js
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 
@@ -17,6 +16,7 @@ const apiService = {
     return makeRequest('get', 'Request/streets');
   },
   fetchHouses(streetId) {
+    console.log('fetchHouses - Street ID:', streetId);
     return makeRequest('get', `Request/houses/${streetId}`);
   },
   fetchApartments(houseId) {
@@ -27,7 +27,7 @@ const apiService = {
   },
   addClient(clientData, apartmentId) {
     return makeRequest('post', 'HousingStock/client', clientData)
-      .then(response => {
+    .then(response => {
         const clientId = response.id;
         return this.bindClientToApartment(clientId, apartmentId);
       });
