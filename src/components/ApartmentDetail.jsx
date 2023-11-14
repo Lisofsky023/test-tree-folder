@@ -30,12 +30,14 @@ const ApartmentDetail = () => {
       {selectedClients.length > 0 ? (
         <div>
           <h3>Clients:</h3>
-          {selectedClients.map(client => (
-            <div key={client.id}>
-              <p>Name: {client.name}, Phone: {client.phone}, Email: {client.email}</p>
-              <button onClick={() => handleDeleteClient(client.bindId)}>Delete Client</button>
-            </div>
-          ))}
+          <ul className='clients-list'>
+            {selectedClients.map(client => (
+              <li className='clients-item' key={client.id}>
+                <p>Name: {client.name}, Phone: {client.phone}, Email: {client.email}</p>
+                <button onClick={() => handleDeleteClient(client.bindId)}>Delete Client</button>
+              </li>
+            ))}
+          </ul>
         </div>
       ) : (
         <p>No clients in this apartment.</p>

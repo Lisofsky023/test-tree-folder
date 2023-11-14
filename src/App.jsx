@@ -1,7 +1,6 @@
 import StreetList from './components/StreetList';
 import HouseList from './components/HouseList';
 import ApartmentList from './components/ApartmentList';
-import ApartmentDetail from './components/ApartmentDetail';
 import { ApartmentSelectionProvider } from './context/ApartmentSelectionProvider';
 
 const App = () => {
@@ -13,7 +12,6 @@ const App = () => {
         <StreetList />
         <HouseList />
         <ApartmentList />
-        <ApartmentDetail />
       </div>
     </ApartmentSelectionProvider>
   );

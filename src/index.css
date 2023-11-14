@@ -67,3 +67,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.clients-list {
+  max-width: 1200px;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.clients-item {
+  max-width: 200px;
+  border: 1px solid #1a1a1a;
+  margin: 7px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
