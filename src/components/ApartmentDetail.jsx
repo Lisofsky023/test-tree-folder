@@ -1,13 +1,19 @@
-import PropTypes from 'prop-types';
 import ClientForm from './ClientForm';
 import apiService from '../api/apiService';
+import { useApartmentSelectionContext } from '../hook/useApartmentSelection';
 
-const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
-  if (!Array.isArray(clients)) {
-    console.error("Invalid prop 'clients'. Expected an array, received:", typeof clients);
-    clients = [];
+const ApartmentDetail = () => {
+  const { selectedApartment, selectedClients, refreshClients } = useApartmentSelectionContext();
+
+  if (!selectedApartment) {
+    return <p>No apartment selected.</p>;
   }
   
+  if (!Array.isArray(selectedClients)) {
+    console.error("Invalid 'clients' data. Expected an array, received:", typeof selectedClients);
+    return <p>Ошибка загрузки данных о клиентах.</p>;
+  }
+
   const handleDeleteClient = (bindId) => {
     apiService.deleteClient(bindId).then(() => {
       refreshClients();
@@ -18,13 +24,13 @@ const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
     <div>
       <h3>Apartment Details</h3>
       <div>
-        <p>Flat: {apartment.flat}</p>
-        <p>Building: {apartment.building}</p>
+        <p>Flat: {selectedApartment.flat}</p>
+        <p>Building: {selectedApartment.building}</p>
       </div>
-      {clients.length > 0 ? (
+      {selectedClients.length > 0 ? (
         <div>
           <h3>Clients:</h3>
-          {clients.map(client => (
+          {selectedClients.map(client => (
             <div key={client.id}>
               <p>Name: {client.name}, Phone: {client.phone}, Email: {client.email}</p>
               <button onClick={() => handleDeleteClient(client.bindId)}>Delete Client</button>
@@ -34,15 +40,9 @@ const ApartmentDetail = ({ apartment, clients, refreshClients }) => {
       ) : (
         <p>No clients in this apartment.</p>
       )}
-      <ClientForm onClientAdded={refreshClients} apartmentId={apartment.addressId} />
+      <ClientForm onClientAdded={refreshClients} apartmentId={selectedApartment.addressId} />
     </div>
   );
-};
-
-ApartmentDetail.propTypes = {
-  apartment: PropTypes.object.isRequired,
-  clients: PropTypes.array.isRequired,
-  refreshClients: PropTypes.func.isRequired
 };
 
 export default ApartmentDetail;

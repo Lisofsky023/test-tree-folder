@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import apiService from '../api/apiService';
-import PropTypes from 'prop-types';
 
-const StreetList = ({ onStreetSelect }) => {
+import apiService from '../api/apiService';
+import { useApartmentSelectionContext } from '../hook/useApartmentSelection';
+
+const StreetList = () => {
+  const { handleStreetSelect } = useApartmentSelectionContext();
   const [streets, setStreets] = useState([]);
   const [error, setError] = useState(null);
 
@@ -27,16 +29,12 @@ const StreetList = ({ onStreetSelect }) => {
   return (
     <ul>
       {streets.map((street) => (
-        <li key={street.id} onClick={() => onStreetSelect(street.id)}>
+        <li key={street.id} onClick={() => handleStreetSelect(street.id)}>
           {street.nameWithPrefix}
         </li>
       ))}
     </ul>
   );  
-};
-
-StreetList.propTypes = {
-  onStreetSelect: PropTypes.func.isRequired,
 };
 
 export default StreetList;
