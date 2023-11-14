@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import apiService from '../api/apiService';
-import { useApartmentSelectionContext } from '../hook/useApartmentSelection';
+import { useApartmentSelectionContext } from '../context/useApartmentSelection';
 
 const StreetList = () => {
   const { handleStreetSelect } = useApartmentSelectionContext();
